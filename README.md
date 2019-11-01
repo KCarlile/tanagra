@@ -12,6 +12,7 @@ Use GitHub's [markdown format](https://guides.github.com/features/mastering-mark
 Requires Pandoc and Mactex (PDF generation)
 - `brew install pandoc`
 - `brew cask install mactex`
+  - Start a new terminal session after stalling mactex if you encounter errors generating PDFs.
 
 ### Structure (Needs updating)
 The functional structure of a book is as follows:
