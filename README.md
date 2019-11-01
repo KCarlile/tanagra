@@ -16,47 +16,36 @@ Requires Pandoc and Mactex (PDF generation)
 
 ### Structure (Needs updating)
 The functional structure of a book is as follows:
-- Content
-  - Part
-    - Chapter
-  - Collateral (Uncertain)
+1. Content
+   1. Part
+      1. Chapter
+         1. Section
+            1. Subsection
+1. Media <<< Media structure TBD
 
 You can name parts and chapters anything you want, but they will be compiled in alpha-numerical order, so you may wish to prefix with numbers.
 
 (The following needs correction/updating.)
 The following is an example of the structure of a book:
-- content/
-  - 00_intro/
-    - 00_title.md
-    - 01_dedication.md
-    - 02_table_of_contents.md
-    - 03_preface.md
-  - 01_part_1/
-    - 01_chapter_1.md
-    - 02_chapter_2.md
-    - 03_chapter_3.md
-  - 02_part_2/
-    - 01_chapter_4.md
-    - 02_chapter_5.md
-- media/
-  - 00_intro/
-    - 00_title/
-      - title.jpg
-    - 03_preface/
-      - img_1.jpg
-      - img_2.jpg
-  - 01_part_1/
-    - 01_chapter_1/
-      - img_3.jpg
-    - 02_chapter_2/
-      - img_4.jpg
-    - 03_chapter_3/
-      - img_5.jpg
-  - 02_part_2/
-    - 01_chapter_4/
-      - img_6.jpg
-    - 02_chapter_5/
-      - img_7.jpg
+
+```
+- book_project_name/
+   - Part 0 - Part Title/
+      - Chapter 1 - Chapter Title.md
+         - Section Title
+            - Subsection Title
+      - Chapter 2 - Chapter Title.md
+         - Section Title
+            - Subsection Title
+   - Part 1 - Part Title/
+      - Chapter 3 - Chapter Title.md
+         - Section Title
+            - Subsection Title
+      - Chapter 4 - Chapter Title.md
+         - Section Title
+            - Subsection Title
+- media/ <<< Media structure TBD
+```
 
 ## content/ and media/ Directories (Needs updating)
 As seen in the structure example above, the `content/` directory contains all the Markdown text files (`*.md`) and the `media/` directory contains all local assets, such as images, in a similar structure as the `content/` directory.
@@ -67,21 +56,31 @@ The scripts directory should not be modified or you may break Tanagra functional
 
 
 ## Instructions (in progress)
+
+There are two ways to run the commands: through the Tanagra main program or by calling each script individually. The purpose for these two methods is to allow for easier scripting by end users. Similarly, each script can be called by passing agruments to it or through interactive mode in which the script asks for inputs.
+
 ### To build a book template...
-Coming soon.
+Coming soon...
 
 ### To convert outline to directory and file structure...
 Call from the Tanagra main program by passing the command (convert) and you will be prompted for the outline file and the build directory:
-`./scripts/tanagra.py convert`
+```bash
+./scripts/tanagra.py convert
+```
 
 Optionally, you can include the outline file (outline.md) and the build directory (new_book/):
-`./scripts/tanagra.py convert outline.md new_book/`
-
+```bash
+./scripts/tanagra.py convert outline.md new_book/
+```
 
 Similarly, you can also call the script directly with or without parameters:
-`./scripts/convert_outline.py`
+```bash
+./scripts/convert_outline.py
+```
 
-`./scripts/convert_outline.py outline.md new_book`
+```bash
+./scripts/convert_outline.py outline.md new_book
+```
 
 ### To compile markdown into a book... (Needs updating)
 To build your book, from the root of your book (same level as the compile symobolic link), run:
