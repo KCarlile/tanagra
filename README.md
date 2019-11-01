@@ -72,4 +72,23 @@ To build your book, from the root of your book (same level as the compile symobo
 - epub
 
 ## Scripts Directory
-The scripts directory should not be modified or you may break book compilation.
+The scripts directory should not be modified or you may break Tanagra functionality.
+
+
+## Instructions (in progress)
+
+### To convert outline to directory and file structure...
+
+Call from the Tanagra main program by passing the command (convert) and you will be prompted for the outline file and the build directory:
+`./scripts/tanagra.py convert`
+
+Optionally, you can include the outline file (outline.md) and the build directory (new_book/):
+`./scripts/tanagra.py convert outline.md new_book/`
+
+
+Similarly, you can also call the script directly with or without parameters:
+`./scripts/convert_outline.py`
+
+`./scripts/convert_outline.py outline.md new_book`
+
+###

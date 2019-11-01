@@ -7,3 +7,7 @@
 ##################
 output/*
 new_book/*
+
+# Testing files #
+#################
+outline.md
