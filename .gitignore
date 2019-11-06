@@ -11,3 +11,7 @@ new_book/*
 # Testing files #
 #################
 outline.md
+
+# Compiled files #
+##################
+*.pyc
