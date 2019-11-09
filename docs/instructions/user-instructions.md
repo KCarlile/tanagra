@@ -1,12 +1,12 @@
-# Scripting Instructions
-Instructions for Scripting (in progress)
+# User Instructions
+The following instructions are calling the various commands for building a book using the Tanagra main script.
 
-There are two ways to run the commands: through the Tanagra main program or by calling each script individually. The purpose for these two methods is to allow for easier scripting by end users. Similarly, each script can be called by passing agruments to it or through interactive mode in which the script asks for inputs.
+There are two ways to run the commands: via the Tanagra main program or [by calling each script individually](scripting-instructions.md). The purpose of the script approach is to allow for easier scripting by end users who want to automate their book's build. Similarly, each script can be called by passing arguments to it or through interactive mode in which the script asks for inputs.
 
-## Generate a book tempalte
-Coming soon...
+## Generate a book template
+**#TODO:** _Needs documentation._
 
-### To convert outline to directory and file structure...
+## Convert an outline into a directory and file structure
 Call the Tanagra main program by passing the command (convert) and you will be prompted for the outline file and the build directory:
 ```bash
 ./scripts/tanagra.py convert
@@ -17,13 +17,5 @@ Optionally, you can include the outline file (outline.md) and the build director
 ./scripts/tanagra.py convert outline.md new_book/
 ```
 
-### To compile markdown into a book... (Needs updating)
-To build your book, from the root of your book (same level as the compile symobolic link), run:
-```bash
-./compile format
-```
-
-...where format is one of the following:
-- pdf
-- html
-- epub
+## To compile markdown into a book... (Needs updating)
+**#TODO:** _Needs documentation._

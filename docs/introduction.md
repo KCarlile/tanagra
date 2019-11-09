@@ -45,7 +45,6 @@ The following is an example of the structure of a book:
 - #TODO: media/ (need to figure out this part of the project)
 ```
 
-
 ## FAQ
 ### Why should I write my book in markdown?
 By writing in Markdown files, you can easily use version control for your files _and_ you can still use text markup (headings, bold, italic, code, etc.).
