@@ -11,12 +11,12 @@ There are two ways to run the commands: [via the Tanagra main program](user-inst
 ## Convert an outline into a directory and file structure
 To convert a markdown outline file into a book directory structure and files, call the `convert_outline` script and pass the outline file (`outline.md`) and the target directory to the `convert_outline` script:
 ```bash
-$ ./scripts/convert_outline.py outline.md new_book
+$ /usr/local/tanagra/scripts/convert_outline.py outline.md new_book
 ```
 
 If you don't pass the parameters, the script will enter interactive mode and ask you for those values.
 ```bash
-$ ./scripts/convert_outline.py
+$ /usr/local/tanagra/scripts/convert_outline.py
 ```
 
 ## To compile markdown into a book... (Needs updating)
