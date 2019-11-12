@@ -9,48 +9,80 @@ import shutil
 import json
 
 from os import path
+from datetime import datetime
 
-BASE_FOLDER = 'content-structure'
-DEFAULT_OUTLINE_FILE = 'outline.md'
-DEFAULT_CONTENT_DIR = 'new_book/'
+
+DEFAULT_BOOK_NAME = 'new_book_' + datetime.today().strftime('%Y%m%d-%H%M%S')
 
 # initialize variables
-param1 = None
-param2 = None
+book_name = None
+book_dir = None
 
 
 def build_template():
-    global parm1
+    global book_name
+    global book_dir
+
+    print(book_name)
+    print(book_dir)
+    book_path = book_dir + '/' + book_name
+
+    try:
+        if not os.path.exists(book_path):
+            os.makedirs(book_path)
+    except OSError:
+        sys.exit('Output directory "' + book_path +
+                 '" does not exist and cannot be created')
 
 
-def build_template_init(p_param1, p_param2):
-    global param1
-    global param2
+def build_template_init(p_book_name, p_book_dir):
+    global book_name
+    global book_dir
 
-    param1 = p_param1
-    param2 = p_param2
+    book_name = p_book_name
+    book_dir = p_book_dir
+
+    book_name = cleanup_book_name(book_name)
 
 
 def build_template_prompt():
-    global param1
-    global param2
+    global book_name
+    global book_dir
 
-    print('What is the name of your outline file? [outline_file.md]')
-    outline_file = str(raw_input())
-    if not outline_file:
-        outline_file = DEFAULT_OUTLINE_FILE
+    print(DEFAULT_BOOK_NAME)
 
+    print('What is a short name for your book project? This is not your title. [' +
+          DEFAULT_BOOK_NAME + ']')
+    book_name = str(raw_input())
+
+    if not book_name:
+        book_name = DEFAULT_BOOK_NAME
+
+    book_name = cleanup_book_name(book_name)
+
+    cwd = os.getcwd()
     print(
-        'What is the name of your content directory? (Existing directories will be deleted.) [new_book/]')
-    content_dir = str(raw_input())
-    if not content_dir:
-        content_dir = DEFAULT_CONTENT_DIR
+        'Where would you like to create your book project? [' + cwd + '/]')
+    book_dir = os.path.expanduser(raw_input())
+    if not book_dir:
+        book_dir = cwd
+    elif not os.path.isdir(book_dir):
+        print('Book directory is invalid.')
+        exit(1)
+
+
+def cleanup_book_name(book_name):
+    # make book_name a machine name string for directories
+    book_name = book_name.lower().replace(' ', '_')
+    book_name = re.sub('[^A-Za-z0-9_]+', '', book_name)
+
+    return book_name
 
 
 def main():
-    global param1
-    global param2
-    # rint('Number of arguments:' + str(len(sys.argv)) + 'arguments.')
+    global book_name
+    global book_dir
+    # print('Number of arguments:' + str(len(sys.argv)) + 'arguments.')
     # print('Argument List:' + str(sys.argv))
 
     # cwd = os.getcwd()
@@ -58,8 +90,8 @@ def main():
 
     # check for arguments or ask for input
     if len(sys.argv) == 3:
-        param1 = str(sys.argv[1])
-        param2 = str(sys.argv[2])
+        book_name = str(sys.argv[1])
+        book_dir = str(sys.argv[2])
     else:
         build_template_prompt()
 

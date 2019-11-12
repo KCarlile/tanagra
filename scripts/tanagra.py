@@ -53,7 +53,7 @@ def main():
 
     if command == 'build':
         print('Build book template.')
-        print('........need to make build command.')
+        build_template()
     elif command == 'convert':
         print('Convert outline to file structure...')
         convert_outline()
@@ -66,6 +66,16 @@ def main():
 
 def build_template():
     global args
+    import build_template
+
+    if len(args) == 2:
+        book_name = str(args[0])
+        book_dir = str(args[1])
+        build_template.build_template_init(book_name, book_dir)
+    else:
+        build_template.build_template_prompt()
+
+    build_template.build_template()
 
 
 def convert_outline():
