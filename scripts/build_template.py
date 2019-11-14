@@ -13,6 +13,7 @@ from datetime import datetime
 
 
 DEFAULT_BOOK_NAME = 'new_book_' + datetime.today().strftime('%Y%m%d-%H%M%S')
+SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 # initialize variables
 book_name = None
@@ -23,16 +24,54 @@ def build_template():
     global book_name
     global book_dir
 
-    print(book_name)
-    print(book_dir)
+    # print(book_name)
+    # print(book_dir)
+
+    # create book directory
     book_path = book_dir + '/' + book_name
 
     try:
         if not os.path.exists(book_path):
             os.makedirs(book_path)
     except OSError:
-        sys.exit('Output directory "' + book_path +
+        sys.exit('Book directory "' + book_path +
                  '" does not exist and cannot be created')
+
+    # create content path
+    content_path = book_path + '/content'
+
+    try:
+        # create content directory
+        if not os.path.exists(content_path):
+            os.makedirs(content_path)
+    except OSError:
+        sys.exit('Content directory "' + content_path +
+                 '" does not exist and cannot be created')
+
+    # create output path
+    output_path = book_path + '/output'
+
+    try:
+        # create content directory
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+    except OSError:
+        sys.exit('Output directory "' + output_path +
+                 '" does not exist and cannot be created')
+
+    # copy template files
+    try:
+        # copy outline.md
+        shutil.copy(
+            SCRIPT_PATH + '/templates/outline.md', content_path + '/outline.md')
+        print('Created outline.md: ' + content_path + '/outline.md')
+
+        # copy metadata.md
+        shutil.copy(
+            SCRIPT_PATH + '/templates/metadata.md', content_path + '/metadata.md')
+        print('Created metadata.md: ' + content_path + '/metadata.md')
+    except OSError:
+        sys.exit('Template file copy failed.')
 
 
 def build_template_init(p_book_name, p_book_dir):
@@ -48,8 +87,6 @@ def build_template_init(p_book_name, p_book_dir):
 def build_template_prompt():
     global book_name
     global book_dir
-
-    print(DEFAULT_BOOK_NAME)
 
     print('What is a short name for your book project? This is not your title. [' +
           DEFAULT_BOOK_NAME + ']')
