@@ -3,10 +3,6 @@
 .DS_Store
 .DS_Store?
 
-# Rendered books #
-##################
-output/*
-new_book/*
 
 # Testing files #
 #################
