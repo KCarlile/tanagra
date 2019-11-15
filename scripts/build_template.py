@@ -6,11 +6,9 @@ import os
 import os.path
 import re
 import shutil
-import json
 
 from os import path
 from datetime import datetime
-
 
 DEFAULT_BOOK_NAME = 'new_book_' + datetime.today().strftime('%Y%m%d-%H%M%S')
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -24,8 +22,7 @@ def build_template():
     global book_name
     global book_dir
 
-    # print(book_name)
-    # print(book_dir)
+    book_dir = book_dir.rstrip('\/')
 
     # create book directory
     book_path = book_dir + '/' + book_name
@@ -63,15 +60,21 @@ def build_template():
     try:
         # copy outline.md
         shutil.copy(
-            SCRIPT_PATH + '/templates/outline.md', content_path + '/outline.md')
-        print('Created outline.md: ' + content_path + '/outline.md')
+            SCRIPT_PATH + '/templates/outline.md', book_path + '/outline.md')
 
         # copy metadata.md
         shutil.copy(
-            SCRIPT_PATH + '/templates/metadata.md', content_path + '/metadata.md')
-        print('Created metadata.md: ' + content_path + '/metadata.md')
+            SCRIPT_PATH + '/templates/metadata.md', book_path + '/metadata.md')
     except OSError:
         sys.exit('Template file copy failed.')
+
+    print('Template creation completed.')
+    print(content_path)
+    print(output_path)
+    print(book_path + '/metadata.md')
+    print(book_path + '/outlne.md')
+    print('\n')
+    print('Your book template is now ready. You may populate your metadata.md and outline.md files.')
 
 
 def build_template_init(p_book_name, p_book_dir):
@@ -119,11 +122,6 @@ def cleanup_book_name(book_name):
 def main():
     global book_name
     global book_dir
-    # print('Number of arguments:' + str(len(sys.argv)) + 'arguments.')
-    # print('Argument List:' + str(sys.argv))
-
-    # cwd = os.getcwd()
-    # print('Current directory ' + cwd)
 
     # check for arguments or ask for input
     if len(sys.argv) == 3:

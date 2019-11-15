@@ -21,6 +21,8 @@ def convert_outline():
     global outline_file
     global content_dir
 
+    content_dir = content_dir.rstrip('\/')
+
     print('Outline file: ' + outline_file)
     print('Content directory: ' + content_dir)
 
@@ -130,11 +132,6 @@ def convert_outline_prompt():
 def main():
     global outline_file
     global content_dir
-    # print('Number of arguments:' + str(len(sys.argv)) + 'arguments.')
-    # print('Argument List:' + str(sys.argv))
-
-    # cwd = os.getcwd()
-    # print('Current directory ' + cwd)
 
     # check for arguments or ask for input
     if len(sys.argv) == 3:

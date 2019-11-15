@@ -19,9 +19,31 @@ def compile_book():
     global output_dir
     global output_format
 
+    source_dir = source_dir.rstrip('\/')
+    output_dir = output_dir.rstrip('\/')
+
     print("source_dir: " + str(source_dir))
     print("output_dir: " + str(output_dir))
     print("output_format: " + str(output_format))
+    # TODO complete compilation steps, convert from Bash scirpt
+
+    file_list = [os.path.join(dp, f) for dp, dn, filenames in os.walk(
+        source_dir) for f in filenames if os.path.splitext(f)[1] == '.md']
+
+    file_list = " ".join(sorted(file_list))
+
+    print(file_list)
+
+    # TODO: call pandoc with parameters
+    # pandoc -s `cat output/file_list.txt` -o output/output.$FORMAT $EXTRA
+
+    # TODO: copy media files if HTML
+# if [ $FORMAT=html ]; then
+#   rm -r output/media
+#   cp -R media output/
+# fi
+
+    # TODO: output success mesage
 
 
 def compile_book_init(p_source_dir, p_output_dir, p_output_format):
@@ -85,11 +107,6 @@ def main():
     global source_dir
     global output_dir
     global output_format
-    # print('Number of arguments:' + str(len(sys.argv)) + 'arguments.')
-    # print('Argument List:' + str(sys.argv))
-
-    # cwd = os.getcwd()
-    # print('Current directory ' + cwd)
 
     # check for arguments or ask for input
     if len(sys.argv) == 4:
