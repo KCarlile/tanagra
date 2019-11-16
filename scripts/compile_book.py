@@ -5,6 +5,7 @@ import sys
 import os
 import os.path
 import shutil
+import subprocess
 
 from os import path
 
@@ -22,22 +23,28 @@ def compile_book():
     source_dir = source_dir.rstrip('\/')
     output_dir = output_dir.rstrip('\/')
 
-    print("source_dir: " + str(source_dir))
-    print("output_dir: " + str(output_dir))
-    print("output_format: " + str(output_format))
-    # TODO complete compilation steps, convert from Bash scirpt
-
     file_list = [os.path.join(dp, f) for dp, dn, filenames in os.walk(
         source_dir) for f in filenames if os.path.splitext(f)[1] == '.md']
 
-    file_list = " ".join(sorted(file_list))
+    file_list = sorted(file_list)
 
-    print(file_list)
+    extra = ''
+    output_file = str(output_dir) + '/output.' + str(output_format)
 
-    # TODO: call pandoc with parameters
-    # pandoc -s `cat output/file_list.txt` -o output/output.$FORMAT $EXTRA
+    # leave out the file list
+    args = ['pandoc', '-s', '-o', str(output_file)]
+    #splice in the file list to avoid Pandoc weirdness
+    args[2:2] = file_list
 
-    # TODO: copy media files if HTML
+    try:
+        # run pandoc with the parameters
+        subprocess.check_output(args)
+    except subprocess.CalledProcessError as e:
+        print e.output
+        print("Pandoc converstion failed: ", str(args))
+
+    # handle copying media over to the output directory for HTML
+    #if output_format == 'html':
 # if [ $FORMAT=html ]; then
 #   rm -r output/media
 #   cp -R media output/
@@ -93,11 +100,11 @@ def compile_book_prompt():
         print('Failed to enter a command selection.')
         exit(1)
     elif output_format_choice == '1':
-        output_format = 'PDF'
+        output_format = 'pdf'
     elif output_format_choice == '2':
-        output_format = 'EPUB'
+        output_format = 'epub'
     elif output_format_choice == '3':
-        output_format = 'HTML'
+        output_format = 'html'
     else:
         print('Failed to enter a valid output format selection.')
         exit(1)
