@@ -14,9 +14,6 @@ def main():
     global command
     global args
 
-    #print('Number of arguments:' + str(len(sys.argv)) + 'arguments.')
-    #print('Argument List:' + str(sys.argv))
-
     script = str(sys.argv.pop(0))  # get 0
 
     if len(sys.argv) > 0:
@@ -25,10 +22,6 @@ def main():
         command = None
 
     args = sys.argv  # get arguments
-
-    #print('Script: ' + str(script))
-    #print('Command: ' + str(command))
-    #print('Args: ' + str(args))
 
     if not command:
         print('Please enter a number to specify a command.')

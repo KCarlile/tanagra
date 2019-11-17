@@ -10,7 +10,6 @@ Tanagra is a documentation pipeline tool for building a template for a markdown-
 1. **Generate the final output file(s) for your book.** Once you have completed writing your book in the markdown files, you can generate a PDF, EPUB, or HTML version of your book.
 1. **Publish your book.** Tanagra cannot help you with this step either. Upload, email, or do whatever you need to do with your generated book to deliver it to your audience.
 
-
 ### Book Structure from Converted Outline (Needs updating)
 The functional structure of a book is as follows:
 1. Content (directory)
