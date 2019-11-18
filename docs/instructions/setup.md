@@ -7,7 +7,7 @@
 ### Installing on Mac OS X
 - Install [Homebrew](https://brew.sh/) package manager
   ```bash
-  $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+  $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   ```
 - Install [Pandoc](https://pandoc.org/)
    ```bash
@@ -42,3 +42,6 @@
 
 ## Writing the Book
 Tanagra presumes the author is using GitHub's [markdown format](https://guides.github.com/features/mastering-markdown/) for outline conversion, although the converter mechanism is more flexible.
+
+## Next Steps
+Now that you've setup Tanagra, you're ready to begin using it. Read the [instructions for more information](instructions.md).
