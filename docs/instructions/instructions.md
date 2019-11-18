@@ -16,7 +16,7 @@ See [Convert an Outline into a Directory and File Structure](convert.md).
 ## **Compile Markdown into a Rendered Book**
 See [Compile Markdown into a Rendered Book](compile.md).
 
-## [Calling Scripts Directly]
+## Calling Scripts Directly
 If you want to bypass the Tanagra main program, you can call the individual scripts directly from within the `scripts/` directory of the Tanagra installation, which is probably `/usr/local/tanagra/scripts/`. The following scripts can be called directly using the same parameters outlined in the instructions above:
 - build_template.py: direct script call for `tanagra build`
 - convert_outline.py: direct script call for `tanagra convert`
