@@ -1,10 +1,13 @@
-#!/usr/bin/python
-# Written for Python 2.7.10
-
+#!/usr/local/bin/python3
+# Written for Python 3.7.5+
+# !/usr/bin/python
 import sys
 import os
 import os.path
 import logging
+
+from initialize import *
+
 
 # initialize variables
 script = None
@@ -12,57 +15,63 @@ command = None
 args = None
 
 
+# welcome
+# build
+# check for existing project
+# if yes
+# exit
+# else make project
+# convert
+# check for existing project
+# if no
+# exit
+# if already converted (content folder not empty)
+# type yes to override
+# otherwise
+# exit
+
+# convert
+
+# compile
+#
+
+# check for existing project
+# if no
+# make project?
+# exit
+# else
+
+
 def main():
-    logging.print_welcome()
-    cwd_result = check_current_directory()
-
-    if cwd_result is False:
-        exit(0)
-
     global script
     global command
     global args
 
     script = str(sys.argv.pop(0))  # get 0
 
-    if len(sys.argv) > 0:
-        command = str(sys.argv.pop(0)).lower()  # get 1
+    # Welcome
+    logging.print_welcome()
+
+    # Get the intended command
+    command = get_command()
+
+    # Look for project in cwd
+    cwd_result = check_current_directory()
+
+    if cwd_result is False:
+        exit(0)
     else:
-        command = None
+        logging.print_info('Tanagra project found.')
+        print('')
 
-    args = sys.argv  # get arguments
-
-    if not command:
-        print('Please enter a number to specify a command.')
-        print(' [1] Build new book template')
-        print(' [2] Convert outline into file structure')
-        print(' [3] Compile markdown files and media into a book')
-        print(' [4] Exit Tanagra')
-        command_choice = str(raw_input())
-        args = []  # make args list empty set as there
-
-        if not command_choice:
-            print('Failed to enter a command selection.')
-            exit(1)
-        elif command_choice == '1':
-            command = 'build'
-        elif command_choice == '2':
-            command = 'convert'
-        elif command_choice == '3':
-            command = 'compile'
-        elif command_choice == '4':
-            sys.exit(0)
-        else:
-            print('Failed to enter a valid command selection.')
-            exit(1)
-
-    if command == 'build':
-        print('Build book template.')
+    # Execute specified command
+    if command == Command.BUILD:
+        print('Building book template.')
         build_template()
-    elif command == 'convert':
-        print('Convert outline to file structure...')
+    elif command == Command.CONVERT:
+        print('Converting outline into file structure.')
         convert_outline()
-    elif command == 'compile':
+    elif command == Command.COMPILE:
         print('Compiling markdown into book.')
         compile_book()
     else:
@@ -71,6 +80,7 @@ def main():
 
 def build_template():
     global args
+
     import build_template
 
     if len(args) == 2:
@@ -84,15 +94,7 @@ def build_template():
 
 
 def convert_outline():
-    global args
     import convert_outline
-
-    if len(args) == 2:
-        outline_file = str(args[0])
-        content_dir = str(args[1])
-        convert_outline.convert_outline_init(outline_file, content_dir)
-    else:
-        convert_outline.convert_outline_prompt()
 
     convert_outline.convert_outline()
 
@@ -113,16 +115,11 @@ def compile_book():
 
 
 def check_current_directory():
+    global command
     result = False
-    cwd = os.getcwd()
 
     logging.print_info(
         'Checking current working directory (' + cwd + ') for project...')
-
-    metadata_path = cwd + '/metadata.md'
-    outline_path = cwd + '/outline.md'
-    content_path = cwd + '/content'
-    output_path = cwd + '/output'
 
     metadata_found = os.path.exists(metadata_path)
     outline_found = os.path.exists(outline_path)
@@ -131,15 +128,17 @@ def check_current_directory():
 
     if ((metadata_found is False) and (outline_found is False) and
             (metadata_found is False) and (outline_found is False)):
-        logging.print_info(
+        logging.print_warning(
             'Tanagra project not found in current directory: ' + cwd)
         logging.print_info(
             'Would you like to create a new project in this directory? [yes]')
 
-        command_choice = str(raw_input())
+        command_choice = str(input())
 
         if (not command_choice) or (command_choice == 'yes'):
             result = True
+            global command
+            command = Command.BUILD
         print('')
     elif ((metadata_found is False) or (outline_found is False) or
             (metadata_found is False) or (outline_found is False)):
@@ -162,11 +161,54 @@ def check_current_directory():
             'Please run Tanagra to build new book template or attempt to resolve issues.')
         print('')
     else:
-        logging.print_info('Tanagra project found.')
-        print('')
         result = True
 
     return result
+
+
+def get_command():
+    global command
+    global args
+
+    if len(sys.argv) > 0:
+        # get the command argument (build, convert, compile)
+        command_arg = str(sys.argv.pop(0)).lower()  # get 1
+
+        if command_arg == 'build':
+            command = Command.BUILD
+        elif command_arg == 'convert':
+            command = Command.CONVERT
+        elif command_arg == 'compile':
+            command = Command.COMPILE
+        else:
+            print_error('Command arugment is not valid.')
+            exit(1)
+
+        args = sys.argv  # get arguments
+    else:
+        # command argument not provided
+        print('Please enter a number to specify a command.')
+        print(' [1] Build a new book template')
+        print(' [2] Convert outline into file structure')
+        print(' [3] Compile markdown files and media into a book')
+        print(' [4] Exit Tanagra')
+        command_choice = str(input())
+        args = []  # make args list empty set as there have been none provided
+
+        if not command_choice:
+            print('Failed to enter a command selection.')
+            exit(1)
+        elif command_choice == '1':
+            command = Command.BUILD
+        elif command_choice == '2':
+            command = Command.CONVERT
+        elif command_choice == '3':
+            command = Command.COMPILE
+        elif command_choice == '4':
+            sys.exit(0)
+        else:
+            print('Failed to enter a valid command selection.')
+            exit(1)
 
 
 if __name__ == "__main__":

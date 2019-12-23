@@ -9,23 +9,20 @@ import shutil
 
 from os import path
 from datetime import datetime
+from initialize import *
 
 DEFAULT_BOOK_NAME = 'new_book_' + datetime.today().strftime('%Y%m%d-%H%M%S')
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 # initialize variables
 book_name = None
-book_dir = None
 
 
 def build_template():
     global book_name
-    global book_dir
-
-    book_dir = book_dir.rstrip('\/')
 
     # create book directory
-    book_path = book_dir + '/' + book_name
+    book_path = cwd + '/' + book_name
 
     try:
         if not os.path.exists(book_path):
@@ -77,38 +74,22 @@ def build_template():
     print('Your book template is now ready. You may populate your metadata.md and outline.md files.')
 
 
-def build_template_init(p_book_name, p_book_dir):
+def build_template_init(p_book_name):
     global book_name
-    global book_dir
-
-    book_name = p_book_name
-    book_dir = p_book_dir
-
-    book_name = cleanup_book_name(book_name)
+    book_name = cleanup_book_name(p_book_name)
 
 
 def build_template_prompt():
     global book_name
-    global book_dir
 
     print('What is a short name for your book project? This is not your title. [' +
           DEFAULT_BOOK_NAME + ']')
-    book_name = str(raw_input())
+    book_name = str(input())
 
     if not book_name:
         book_name = DEFAULT_BOOK_NAME
 
     book_name = cleanup_book_name(book_name)
-
-    cwd = os.getcwd()
-    print(
-        'Where would you like to create your book project? [' + cwd + '/]')
-    book_dir = os.path.expanduser(raw_input())
-    if not book_dir:
-        book_dir = cwd
-    elif not os.path.isdir(book_dir):
-        print('Book directory is invalid.')
-        exit(1)
 
 
 def cleanup_book_name(book_name):
@@ -120,16 +101,7 @@ def cleanup_book_name(book_name):
 
 
 def main():
-    global book_name
-    global book_dir
-
-    # check for arguments or ask for input
-    if len(sys.argv) == 3:
-        book_name = str(sys.argv[1])
-        book_dir = str(sys.argv[2])
-    else:
-        build_template_prompt()
-
+    build_template_prompt()
     build_template()
 
 

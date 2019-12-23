@@ -9,6 +9,8 @@ import subprocess
 
 from os import path
 
+import init
+
 # initialize variables
 source_dir = None
 output_dir = None
@@ -33,7 +35,7 @@ def compile_book():
 
     # leave out the file list
     args = ['pandoc', '-s', '-o', str(output_file)]
-    #splice in the file list to avoid Pandoc weirdness
+    # splice in the file list to avoid Pandoc weirdness
     args[2:2] = file_list
 
     try:
@@ -44,7 +46,7 @@ def compile_book():
         print("Pandoc converstion failed: ", str(args))
 
     # handle copying media over to the output directory for HTML
-    #if output_format == 'html':
+    # if output_format == 'html':
 # if [ $FORMAT=html ]; then
 #   rm -r output/media
 #   cp -R media output/

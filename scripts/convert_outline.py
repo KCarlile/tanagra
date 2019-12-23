@@ -7,35 +7,23 @@ import os.path
 import shutil
 
 from os import path
-
-BASE_FOLDER = 'content-structure'
-DEFAULT_OUTLINE_FILE = 'outline.md'
-DEFAULT_CONTENT_DIR = 'new_book/'
-
-# initialize variables
-outline_file = None
-content_dir = None
+from initialize import *
 
 
 def convert_outline():
-    global outline_file
-    global content_dir
-
-    content_dir = content_dir.rstrip('\/')
-
-    print('Outline file: ' + outline_file)
-    print('Content directory: ' + content_dir)
+    print('Content directory: ' + content_path)
+    print('Outline file: ' + output_path)
 
     # make sure outline file exists
-    print('Loading ' + outline_file + '...')
-    if path.exists(outline_file):
-        print('Reading ' + outline_file + '...')
+    print('Loading ' + outline_path + '...')
+    if path.exists(outline_path):
+        print('Reading ' + outline_path + '...')
     else:
-        print(outline_file + ' does not exist.')
+        print(outline_path + ' does not exist.')
         sys.exit(1)
 
     # read the outline file
-    with open(outline_file) as f:
+    with open(outline_path) as f:
         content = f.readlines()
 
     structure = []
@@ -47,9 +35,9 @@ def convert_outline():
             structure.append(line.strip('\n'))
 
     # clean out the content structure
-    if os.path.isdir(content_dir):
-        for file in os.listdir(content_dir):
-            file_path = os.path.join(content_dir, file)
+    if os.path.isdir(content_path):
+        for file in os.listdir(content_path):
+            file_path = os.path.join(content_path, file)
             try:
                 if os.path.isfile(file_path):
                     os.unlink(file_path)
@@ -58,7 +46,7 @@ def convert_outline():
             except Exception as e:
                 print(e)
 
-        print(content_dir + ' emptied.')
+        print(content_path + ' emptied.')
 
     depth = 0
     part = ''
@@ -70,11 +58,10 @@ def convert_outline():
         if item:
             depth = (len(item) - len(item.lstrip(' '))) / 2
             item = item.lstrip(' ').lstrip('1. ')
-            # print depth, '::', item
 
             if depth == 0:
                 # Part
-                part = content_dir + '/' + item
+                part = content_path + '/' + item
                 if not os.path.exists(part):
                     os.makedirs(part)
                     print(part)
@@ -104,42 +91,7 @@ def convert_outline():
                     file.write('### ' + item + "\n\n\n")
 
 
-def convert_outline_init(p_outline_file, p_content_dir):
-    global outline_file
-    global content_dir
-
-    outline_file = os.path.expanduser(p_outline_file)
-    content_dir = os.path.expanduser(p_content_dir)
-
-
-def convert_outline_prompt():
-    global outline_file
-    global content_dir
-
-    print('What is the name of your outline file? [outline_file.md]')
-    outline_file = os.path.expanduser(str(raw_input()))
-    if not outline_file:
-        outline_file = DEFAULT_OUTLINE_FILE
-
-    print(
-        'What is the name of your content directory? (Existing directories will be deleted.) [new_book/]')
-    content_dir = os.path.expanduser(str(raw_input()))
-
-    if not content_dir:
-        content_dir = DEFAULT_CONTENT_DIR
-
-
 def main():
-    global outline_file
-    global content_dir
-
-    # check for arguments or ask for input
-    if len(sys.argv) == 3:
-        outline_file = os.path.expanduser(str(sys.argv[1]))
-        content_dir = os.path.expanduser(str(sys.argv[2]))
-    else:
-        convert_outline_prompt()
-
     convert_outline()
 
 

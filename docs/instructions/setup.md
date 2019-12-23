@@ -1,6 +1,6 @@
 # Setup
 ## Prerequisites
-- Python 2.7.10+
+- Python 3.7.5+
 - Bash shell
 
 ## Installation
