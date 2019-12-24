@@ -36,10 +36,10 @@ args = None
 #   check for converted (content folder not empty)
 #
 
-#
-# Main function
-#
 def main():
+    """
+    Main function
+    """
     global script
     global command
     global args
@@ -65,19 +65,16 @@ def main():
     else:
         print('Command selection failed for: ', command)
 
-#
-# Executes actions build a new book template
-#
-
 
 def build_template():
+    """
+    Executes actions build a new book template
+    """
     global args
 
     # Look for project in cwd
-    cwd_result = is_project_directory()
-
-    if cwd_result is True:
-        logging.print_info('Existing Tanagra project found in ', cwd)
+    if is_project_directory() is True:
+        logging.print_info('Existing Tanagra project found in ' + cwd)
         exit(0)
 
     import build_template
@@ -91,19 +88,29 @@ def build_template():
     build_template.build_template()
 
 
-#
-# Executes actions to convert an outline to files in content directory
-#
 def convert_outline():
+    """
+    Executes actions to convert an outline to files in content directory
+    """
+    # Look for project in cwd
+    if is_project_directory() is False:
+        logging.print_info('No Tanagra project found in ' + cwd)
+        exit(0)
+
     import convert_outline
 
     convert_outline.convert_outline()
 
 
-#
-# Executes actions to compile a book
-#
 def compile_book():
+    """
+    Executes actions to compile a book
+    """
+    # Look for project in cwd
+    if is_project_directory() is False:
+        logging.print_info('No Tanagra project found in ' + cwd)
+        exit(0)
+
     global args
     import compile_book
 
@@ -118,14 +125,14 @@ def compile_book():
     compile_book.compile_book()
 
 
-#
-# Determine if the current directory is a Tanagra project directory
-#
-# Returns:
-#   True if current working directory is a Tanagra project directory
-#   False otherwise
-#
 def is_project_directory():
+    """
+    Determine if the current directory is a Tanagra project directory
+
+    Returns:
+        True if current working directory is a Tanagra project directory
+        False otherwise
+    """
     global command
     result = False
 
@@ -166,12 +173,11 @@ def is_project_directory():
 
     return result
 
-#
-# Determine that the user is trying to do
-#
-
 
 def get_command():
+    """
+    Determine that the user is trying to do
+    """
     global args
 
     command = None
