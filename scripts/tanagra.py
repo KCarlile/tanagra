@@ -1,6 +1,5 @@
 #!/usr/local/bin/python3
 # Written for Python 3.7.5+
-# !/usr/bin/python
 import sys
 import os
 import os.path
@@ -17,31 +16,29 @@ args = None
 
 # welcome
 # build
-# check for existing project
-# if yes
-# exit
-# else make project
+#   check for existing project
+#       if yes
+#           exit
+#       else make project
 # convert
-# check for existing project
-# if no
-# exit
-# if already converted (content folder not empty)
-# type yes to override
-# otherwise
-# exit
-
-# convert
-
+#   check for existing project
+#       if no
+#           exit
+#       if already converted (content folder not empty)
+#           type yes to override
+#       else exit
+#       convert
 # compile
+#   check for existing project
+#       if no
+#           make project?
+#       else exit
+#   check for converted (content folder not empty)
 #
 
-# check for existing project
-# if no
-# make project?
-# exit
-# else
-
-
+#
+# Main function
+#
 def main():
     global script
     global command
@@ -55,15 +52,6 @@ def main():
     # Get the intended command
     command = get_command()
 
-    # Look for project in cwd
-    cwd_result = check_current_directory()
-
-    if cwd_result is False:
-        exit(0)
-    else:
-        logging.print_info('Tanagra project found.')
-        print('')
-
     # Execute specified command
     if command == Command.BUILD:
         print('Building book template.')
@@ -75,30 +63,46 @@ def main():
         print('Compiling markdown into book.')
         compile_book()
     else:
-        print('Command selection failed for: ' + command)
+        print('Command selection failed for: ', command)
+
+#
+# Executes actions build a new book template
+#
 
 
 def build_template():
     global args
 
+    # Look for project in cwd
+    cwd_result = is_project_directory()
+
+    if cwd_result is True:
+        logging.print_info('Existing Tanagra project found in ', cwd)
+        exit(0)
+
     import build_template
 
-    if len(args) == 2:
+    if len(args) == 1:
         book_name = str(args[0])
-        book_dir = str(args[1])
-        build_template.build_template_init(book_name, book_dir)
+        build_template.build_template_init(book_name)
     else:
         build_template.build_template_prompt()
 
     build_template.build_template()
 
 
+#
+# Executes actions to convert an outline to files in content directory
+#
 def convert_outline():
     import convert_outline
 
     convert_outline.convert_outline()
 
 
+#
+# Executes actions to compile a book
+#
 def compile_book():
     global args
     import compile_book
@@ -114,7 +118,14 @@ def compile_book():
     compile_book.compile_book()
 
 
-def check_current_directory():
+#
+# Determine if the current directory is a Tanagra project directory
+#
+# Returns:
+#   True if current working directory is a Tanagra project directory
+#   False otherwise
+#
+def is_project_directory():
     global command
     result = False
 
@@ -130,16 +141,6 @@ def check_current_directory():
             (metadata_found is False) and (outline_found is False)):
         logging.print_warning(
             'Tanagra project not found in current directory: ' + cwd)
-        logging.print_info(
-            'Would you like to create a new project in this directory? [yes]')
-
-        command_choice = str(input())
-
-        if (not command_choice) or (command_choice == 'yes'):
-            result = True
-            global command
-            command = Command.BUILD
-        print('')
     elif ((metadata_found is False) or (outline_found is False) or
             (metadata_found is False) or (outline_found is False)):
             # project not properly initialized
@@ -158,17 +159,22 @@ def check_current_directory():
             logging.print_error('  - output/ directory not found.')
 
         logging.print_warning(
-            'Please run Tanagra to build new book template or attempt to resolve issues.')
+            'Please run Tanagra to build new book template or attempt to resolve issues manually.')
         print('')
     else:
         result = True
 
     return result
 
+#
+# Determine that the user is trying to do
+#
+
 
 def get_command():
-    global command
     global args
+
+    command = None
 
     if len(sys.argv) > 0:
         # get the command argument (build, convert, compile)
@@ -195,20 +201,19 @@ def get_command():
         command_choice = str(input())
         args = []  # make args list empty set as there have been none provided
 
-        if not command_choice:
-            print('Failed to enter a command selection.')
-            exit(1)
-        elif command_choice == '1':
+        if command_choice == '1':
             command = Command.BUILD
         elif command_choice == '2':
             command = Command.CONVERT
         elif command_choice == '3':
             command = Command.COMPILE
         elif command_choice == '4':
-            sys.exit(0)
+            exit(0)
         else:
             print('Failed to enter a valid command selection.')
             exit(1)
+
+    return command
 
 
 if __name__ == "__main__":

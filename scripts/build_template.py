@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# Written for Python 2.7.10
+#!/usr/local/bin/python3
+# Written for Python 3.7.5+
 
 import sys
 import os
