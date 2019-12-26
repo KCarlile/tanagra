@@ -14,28 +14,6 @@ command = None
 args = None
 
 
-# welcome
-# build
-#   check for existing project
-#       if yes
-#           exit
-#       else make project
-# convert
-#   check for existing project
-#       if no
-#           exit
-#       if already converted (content folder not empty)
-#           type yes to override
-#       else exit
-#       convert
-# compile
-#   check for existing project
-#       if no
-#           make project?
-#       else exit
-#   check for converted (content folder not empty)
-#
-
 def main():
     """
     Main function
@@ -92,6 +70,16 @@ def convert_outline():
     """
     Executes actions to convert an outline to files in content directory
     """
+
+# convert
+#   check for existing project
+#       if no
+#           exit
+#       if already converted (content folder not empty)
+#           type yes to override
+#       else exit
+#       convert
+
     # Look for project in cwd
     if is_project_directory() is False:
         logging.print_info('No Tanagra project found in ' + cwd)
@@ -106,6 +94,14 @@ def compile_book():
     """
     Executes actions to compile a book
     """
+
+# compile
+#   check for existing project
+#       if no
+#           make project?
+#       else exit
+#   check for converted (content folder not empty)
+
     # Look for project in cwd
     if is_project_directory() is False:
         logging.print_info('No Tanagra project found in ' + cwd)

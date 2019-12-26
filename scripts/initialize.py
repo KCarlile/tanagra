@@ -12,10 +12,11 @@ outline_path = os.path.expanduser(cwd + '/outline.md')
 content_path = os.path.expanduser(cwd + '/content')
 output_path = os.path.expanduser(cwd + '/output')
 
-#
-# Enumeration (class) for valid commands
-#
+
 class Command(Enum):
+    """
+    Enumeration (class) for valid commands
+    """
     FAIL = 0
     BUILD = 1
     CONVERT = 2
