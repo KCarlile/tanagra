@@ -71,20 +71,23 @@ def convert_outline():
     Executes actions to convert an outline to files in content directory
     """
 
-# convert
-#   check for existing project
-#       if no
-#           exit
-#       if already converted (content folder not empty)
-#           type yes to override
-#       else exit
-#       convert
-
     # Look for project in cwd
     if is_project_directory() is False:
         logging.print_info('No Tanagra project found in ' + cwd)
         exit(0)
 
+    # Look for converted outline in content/
+    if is_converted() is True:
+        logging.print_info(
+            'Converted outline already found in content directory. Type "confirm" to overwrite content directory.')
+
+        response = str(input()).lower()
+
+        if response != "confirm":
+            logging.print_info('Content directory overwrite not confirmed.')
+            exit(1)
+
+    # Convert outline
     import convert_outline
 
     convert_outline.convert_outline()
@@ -95,17 +98,15 @@ def compile_book():
     Executes actions to compile a book
     """
 
-# compile
-#   check for existing project
-#       if no
-#           make project?
-#       else exit
-#   check for converted (content folder not empty)
-
     # Look for project in cwd
     if is_project_directory() is False:
         logging.print_info('No Tanagra project found in ' + cwd)
         exit(0)
+
+    # Look for converted outline in content/
+    if is_converted() is True:
+        logging.print_info(
+            'Converted outline already found in content directory. Type "confirm" to overwrite content directory.')
 
     global args
     import compile_book
@@ -170,6 +171,28 @@ def is_project_directory():
     return result
 
 
+def is_converted():
+    """
+    Determine if the content directory has already been populated (outline already converted)
+
+    Returns:
+        True if files exist in the content directory
+        False otherwise
+    """
+
+    result = False
+
+    if os.path.exists(content_path) and os.path.isdir(content_path):
+        if os.listdir(content_path):
+            result = True
+            logging.print_warning('Warning: Content directory is not empty.')
+    else:
+        result = True
+        logging.print_error('Error: Content directory does not exist.')
+
+    return result
+
+
 def get_command():
     """
     Determine that the user is trying to do
@@ -189,7 +212,7 @@ def get_command():
         elif command_arg == 'compile':
             command = Command.COMPILE
         else:
-            print_error('Command arugment is not valid.')
+            logging.print_error('Command arugment is not valid.')
             exit(1)
 
         args = sys.argv  # get arguments
