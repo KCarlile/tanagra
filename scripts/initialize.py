@@ -21,3 +21,12 @@ class Command(Enum):
     BUILD = 1
     CONVERT = 2
     COMPILE = 3
+
+
+class Format(Enum):
+    """
+    Enumeration (class) for falid formats
+    """
+    PDF = 'pdf'
+    EPUB = 'epub'
+    HTML = 'html'

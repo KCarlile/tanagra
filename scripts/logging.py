@@ -32,5 +32,6 @@ def print_welcome():
     print_header('-------------------------------------')
     print_header('| Tanagra                           |')
     print_header('|   A markdown book pipeline tool   |')
+    print_header('|   https://www.tanagra.dev/        |')
     print_header('-------------------------------------')
     print('')

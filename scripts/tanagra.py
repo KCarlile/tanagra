@@ -79,7 +79,7 @@ def convert_outline():
     # Look for converted outline in content/
     if is_converted() is True:
         logging.print_info(
-            'Converted outline already found in content directory. Type "confirm" to overwrite content directory.')
+            'Converted outline already found in content directory (' + content_path + '). Type "confirm" to overwrite content directory.')
 
         response = str(input()).lower()
 
@@ -89,7 +89,6 @@ def convert_outline():
 
     # Convert outline
     import convert_outline
-
     convert_outline.convert_outline()
 
 
@@ -104,18 +103,16 @@ def compile_book():
         exit(0)
 
     # Look for converted outline in content/
-    if is_converted() is True:
-        logging.print_info(
-            'Converted outline already found in content directory. Type "confirm" to overwrite content directory.')
+    if is_converted() is False:
+        logging.print_info('Converted outline not found in ' + content_path)
+        exit(0)
 
     global args
     import compile_book
 
-    if len(args) == 3:
-        source_dir = str(args[0])
-        output_dir = str(args[1])
-        output_format = str(args[2])
-        compile_book.compile_book_init(source_dir, output_dir, output_format)
+    if len(args) == 1:
+        output_format = str(args[0])
+        compile_book.compile_book_init(output_format)
     else:
         compile_book.compile_book_prompt()
 
