@@ -1,2 +1,2 @@
 # Tanagra Docs
-Please start at the [documentation index](index.md).
+Please view at the [documentation at Tanagra.dev](https://www.tanagra.dev/).
