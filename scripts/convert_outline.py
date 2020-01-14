@@ -56,7 +56,7 @@ def convert_outline():
 
     for item in structure:
         if item:
-            depth = (len(item) - len(item.lstrip(' '))) / 2
+            depth = (len(item) - len(item.lstrip(' '))) / 3
             item = item.lstrip(' ').lstrip('1. ')
 
             if depth == 0:
@@ -67,6 +67,7 @@ def convert_outline():
                     print(part)
             if depth == 1:
                 # Chapter
+                print(item)
                 chapter = part + '/' + item + '.md'
                 print(chapter)
 
