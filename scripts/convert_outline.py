@@ -65,6 +65,8 @@ def convert_outline():
                 if not os.path.exists(part):
                     os.makedirs(part)
                     print(part)
+                    # media folder
+                    os.makedirs(part + '/' + item + '_media')
             if depth == 1:
                 # Chapter
                 print(item)

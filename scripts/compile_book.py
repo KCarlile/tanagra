@@ -16,6 +16,8 @@ output_format = None
 
 
 def compile_book():
+    copy_media_cwd()
+
     global output_format
 
     file_list = [os.path.join(dp, f) for dp, dn, filenames in os.walk(
@@ -23,7 +25,6 @@ def compile_book():
 
     file_list = sorted(file_list)
 
-    extra = ''
     output_file = str(output_path) + '/output.' + str(output_format.value)
 
     # leave out the file list
@@ -38,14 +39,77 @@ def compile_book():
         logging.print_error(e.output)
         logging.print_error("Pandoc converstion failed: ", str(args))
 
-    # handle copying media over to the output directory for HTML
-    # if output_format == 'html':
-# if [ $FORMAT=html ]; then
-#   rm -r output/media
-#   cp -R media output/
-# fi
+    if (output_format == Format.HTML):
+        copy_media_html()
+
+    cleanup_media()
 
     # TODO: output success mesage
+
+
+def copy_media_cwd():
+    """
+    Copies media folders from content/ to cwd for compilation
+    """
+    media_dirs = []
+
+    for (root, dirs, files) in os.walk(content_path):
+        if(root.endswith('_media')):
+            media_dirs.append(root)
+
+    print(media_dirs)
+
+    # copy media folders to root
+    try:
+        for media_dir in media_dirs:
+            dir_name = os.path.basename(os.path.normpath(media_dir))
+            shutil.copytree(media_dir, cwd + '/' + dir_name)
+    # except OSError:
+    except OSError as err:
+        logging.print_error("OS error: {0}".format(err))
+        sys.exit('Media directory copy to cwd failed.')
+
+
+def copy_media_html():
+    """
+    Copies media folders from cwd to output for HTML post compilation
+    """
+    media_root_dirs = []
+
+    for child in next(os.walk(cwd))[1]:
+        if(os.path.isdir(child)) and child.endswith('_media'):
+            media_root_dirs.append(child)
+
+    # copy media folders to output
+    try:
+        for media_dir in media_root_dirs:
+            dir_name = os.path.basename(os.path.normpath(media_dir))
+            shutil.copytree(media_dir, output_path + '/' + dir_name)
+    # except OSError:
+    except OSError as err:
+        logging.print_error("OS error: {0}".format(err))
+        sys.exit('Media directory copy to output failed.')
+
+
+def cleanup_media():
+    """
+    Removes copies of media folders from root following compilation
+    """
+    media_root_dirs = []
+
+    for child in next(os.walk(cwd))[1]:
+        if(os.path.isdir(child)) and child.endswith('_media'):
+            media_root_dirs.append(child)
+
+    # copy media folders to root
+    try:
+        for media_root_dir in media_root_dirs:
+            logging.print_info('Cleanup: ' + cwd + '/' + media_root_dir)
+            shutil.rmtree(cwd + '/' + media_root_dir)
+    # except OSError:
+    except OSError as err:
+        logging.print_error("OS error: {0}".format(err))
+        sys.exit('Media directory cleanup failed.')
 
 
 def compile_book_init(p_output_format):
