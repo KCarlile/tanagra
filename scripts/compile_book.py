@@ -57,8 +57,6 @@ def copy_media_cwd():
         if(root.endswith('_media')):
             media_dirs.append(root)
 
-    print(media_dirs)
-
     # copy media folders to root
     try:
         for media_dir in media_dirs:
