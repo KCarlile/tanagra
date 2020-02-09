@@ -6,6 +6,7 @@ import os
 import os.path
 import re
 import shutil
+import logging
 
 from os import path
 from datetime import datetime
@@ -65,13 +66,14 @@ def build_template():
     except OSError:
         sys.exit('Template file copy failed.')
 
-    print('Template creation completed.')
-    print(content_path)
-    print(output_path)
-    print(book_path + '/metadata.md')
-    print(book_path + '/outlne.md')
+    logging.print_info('Template creation completed.')
+    logging.print_info(content_path)
+    logging.print_info(output_path)
+    logging.print_info(book_path + '/metadata.md')
+    logging.print_info(book_path + '/outlne.md')
     print('\n')
-    print('Your book template is now ready. You may populate your metadata.md and outline.md files.')
+    logging.print_info(
+        'Your book template is now ready. You may populate your metadata.md and outline.md files.')
 
 
 def build_template_init(p_book_name):
@@ -82,8 +84,8 @@ def build_template_init(p_book_name):
 def build_template_prompt():
     global book_name
 
-    print('What is a short name for your book project? This is not your title. [' +
-          DEFAULT_BOOK_NAME + ']')
+    logging.print_info('What is a short name for your book project? This is not your title. [' +
+                       DEFAULT_BOOK_NAME + ']')
     book_name = str(input())
 
     if not book_name:

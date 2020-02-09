@@ -11,15 +11,15 @@ from initialize import *
 
 
 def convert_outline():
-    print('Content directory: ' + content_path)
-    print('Outline file: ' + output_path)
+    logging.print_info('Content directory: ' + content_path)
+    logging.print_info('Outline file: ' + output_path)
 
     # make sure outline file exists
-    print('Loading ' + outline_path + '...')
+    logging.print_info('Loading ' + outline_path + '...')
     if path.exists(outline_path):
-        print('Reading ' + outline_path + '...')
+        logging.print_info('Reading ' + outline_path + '...')
     else:
-        print(outline_path + ' does not exist.')
+        logging.print_info(outline_path + ' does not exist.')
         sys.exit(1)
 
     # read the outline file
@@ -44,9 +44,9 @@ def convert_outline():
                 elif os.path.isdir(file_path):
                     shutil.rmtree(file_path)
             except Exception as e:
-                print(e)
+                logging.print_error(e)
 
-        print(content_path + ' emptied.')
+        logging.print_info(content_path + ' emptied.')
 
     depth = 0
     part = ''
@@ -64,14 +64,14 @@ def convert_outline():
                 part = content_path + '/' + item
                 if not os.path.exists(part):
                     os.makedirs(part)
-                    print(part)
+                    logging.print_info(part)
                     # media folder
                     os.makedirs(part + '/' + item + '_media')
             if depth == 1:
                 # Chapter
-                print(item)
+                logging.print_info(item)
                 chapter = part + '/' + item + '.md'
-                print(chapter)
+                logging.print_info(chapter)
 
                 mode = 'a+' if os.path.exists(chapter) else 'w+'
                 with open(chapter, mode) as file:
@@ -79,7 +79,7 @@ def convert_outline():
             if depth == 2:
                 # Section
                 section = '## ' + item
-                print(section)
+                logging.print_info(section)
 
                 mode = 'a+' if os.path.exists(chapter) else 'w+'
                 with open(chapter, mode) as file:
@@ -87,7 +87,7 @@ def convert_outline():
             if depth == 3:
                 # Subsection
                 subsection = '### ' + item
-                print(subsection)
+                logging.print_info(subsection)
 
                 mode = 'a+' if os.path.exists(chapter) else 'w+'
                 with open(chapter, mode) as file:

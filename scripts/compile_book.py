@@ -19,13 +19,27 @@ def compile_book():
     copy_media_cwd()
 
     global output_format
+    output_file_name = 'output'  # TODO: replace with book name
 
     file_list = [os.path.join(dp, f) for dp, dn, filenames in os.walk(
         content_path) for f in filenames if os.path.splitext(f)[1] == '.md']
 
     file_list = sorted(file_list)
 
-    output_file = str(output_path) + '/output.' + str(output_format.value)
+    output_format_path = str(output_path) + '/' + \
+        str(output_format.value) + '/'
+
+    try:
+        cleanup_output(str(output_format.value))
+
+        # create content directory
+        if not os.path.exists(output_format_path):
+            os.makedirs(output_format_path)
+    except OSError:
+        sys.exit('Output format directory "' + output_format_path +
+                 '" does not exist and cannot be created')
+
+    output_file = output_format_path + 'output.' + str(output_format.value)
 
     # leave out the file list
     args = ['pandoc', '-s', '-o', str(output_file)]
@@ -36,6 +50,7 @@ def compile_book():
         # run pandoc with the parameters
         subprocess.check_output(args)
     except subprocess.CalledProcessError as e:
+        cleanup_media()
         logging.print_error(e.output)
         logging.print_error("Pandoc converstion failed: ", str(args))
 
@@ -44,7 +59,8 @@ def compile_book():
 
     cleanup_media()
 
-    # TODO: output success mesage
+    logging.print_info("Markdown book compiled into " +
+                       str(output_format.value).upper() + ": " + output_file)
 
 
 def copy_media_cwd():
@@ -56,8 +72,6 @@ def copy_media_cwd():
     for (root, dirs, files) in os.walk(content_path):
         if(root.endswith('_media')):
             media_dirs.append(root)
-
-    print(media_dirs)
 
     # copy media folders to root
     try:
@@ -84,7 +98,7 @@ def copy_media_html():
     try:
         for media_dir in media_root_dirs:
             dir_name = os.path.basename(os.path.normpath(media_dir))
-            shutil.copytree(media_dir, output_path + '/' + dir_name)
+            shutil.copytree(media_dir, output_path + '/html/' + dir_name)
     # except OSError:
     except OSError as err:
         logging.print_error("OS error: {0}".format(err))
@@ -93,7 +107,7 @@ def copy_media_html():
 
 def cleanup_media():
     """
-    Removes copies of media folders from root following compilation
+    Removes copies of media directories from root following compilation
     """
     media_root_dirs = []
 
@@ -101,7 +115,7 @@ def cleanup_media():
         if(os.path.isdir(child)) and child.endswith('_media'):
             media_root_dirs.append(child)
 
-    # copy media folders to root
+    # cleanup media directories from root
     try:
         for media_root_dir in media_root_dirs:
             logging.print_info('Cleanup: ' + cwd + '/' + media_root_dir)
@@ -110,6 +124,32 @@ def cleanup_media():
     except OSError as err:
         logging.print_error("OS error: {0}".format(err))
         sys.exit('Media directory cleanup failed.')
+
+
+def cleanup_output(format=None):
+    """
+    Removes compiled output for the specified format or all output when no format is provided.
+
+    Parameters:
+        format  PDF, EPUB, or HTML; null will empty the entire output directory
+    """
+    # Execute specified command
+    if format == Format.PDF.value:
+        logging.print_info("Deleting output for PDF.")
+    elif format == Format.EPUB.value:
+        logging.print_info("Deleting output for EPUB.")
+    elif format == Format.HTML.value:
+        logging.print_info("Deleting output for HTML.")
+    else:
+        logging.print_info("Deleting output for all formats.")
+
+    # cleanup output directories
+    try:
+        shutil.rmtree(cwd + '/output/' + format)
+    # except OSError:
+    except OSError as err:
+        logging.print_error("OS error: {0}".format(err))
+        sys.exit('Output directory cleanup failed.')
 
 
 def compile_book_init(p_output_format):

@@ -32,16 +32,16 @@ def main():
 
     # Execute specified command
     if command == Command.BUILD:
-        print('Building book template.')
+        logging.print_info('Building book template.')
         build_template()
     elif command == Command.CONVERT:
-        print('Converting outline into file structure.')
+        logging.print_info('Converting outline into file structure.')
         convert_outline()
     elif command == Command.COMPILE:
-        print('Compiling markdown into book.')
+        logging.print_info('Compiling markdown into book.')
         compile_book()
     else:
-        print('Command selection failed for: ', command)
+        logging.print_error('Command selection failed for: ', command)
 
 
 def build_template():
@@ -215,11 +215,11 @@ def get_command():
         args = sys.argv  # get arguments
     else:
         # command argument not provided
-        print('Please enter a number to specify a command.')
-        print(' [1] Build a new book template')
-        print(' [2] Convert outline into file structure')
-        print(' [3] Compile markdown files and media into a book')
-        print(' [4] Exit Tanagra')
+        logging.print_info('Please enter a number to specify a command.')
+        logging.print_info(' [1] Build a new book template')
+        logging.print_info(' [2] Convert outline into file structure')
+        logging.print_info(' [3] Compile markdown files and media into a book')
+        logging.print_info(' [4] Exit Tanagra')
         command_choice = str(input())
         args = []  # make args list empty set as there have been none provided
 
@@ -232,7 +232,7 @@ def get_command():
         elif command_choice == '4':
             exit(0)
         else:
-            print('Failed to enter a valid command selection.')
+            logging.print_error('Failed to enter a valid command selection.')
             exit(1)
 
     return command
