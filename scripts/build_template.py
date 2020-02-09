@@ -6,6 +6,7 @@ import os
 import os.path
 import re
 import shutil
+import logging
 
 from os import path
 from datetime import datetime
@@ -71,7 +72,8 @@ def build_template():
     logging.print_info(book_path + '/metadata.md')
     logging.print_info(book_path + '/outlne.md')
     print('\n')
-    logging.print_info('Your book template is now ready. You may populate your metadata.md and outline.md files.')
+    logging.print_info(
+        'Your book template is now ready. You may populate your metadata.md and outline.md files.')
 
 
 def build_template_init(p_book_name):
@@ -83,7 +85,7 @@ def build_template_prompt():
     global book_name
 
     logging.print_info('What is a short name for your book project? This is not your title. [' +
-          DEFAULT_BOOK_NAME + ']')
+                       DEFAULT_BOOK_NAME + ']')
     book_name = str(input())
 
     if not book_name:
