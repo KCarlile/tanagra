@@ -63,6 +63,12 @@ def build_template():
         # copy metadata.md
         shutil.copy(
             SCRIPT_PATH + '/templates/metadata.md', book_path + '/metadata.md')
+
+        # copy README files for allowing empty directories to be committed
+        shutil.copy(
+            SCRIPT_PATH + '/templates/README', content_path + '/README')
+        shutil.copy(
+            SCRIPT_PATH + '/templates/README', output_path + '/README')
     except OSError:
         sys.exit('Template file copy failed.')
 
