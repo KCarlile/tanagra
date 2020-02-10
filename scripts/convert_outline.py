@@ -5,6 +5,7 @@ import sys
 import os
 import os.path
 import shutil
+import logging
 
 from os import path
 from initialize import *
