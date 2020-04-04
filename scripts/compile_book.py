@@ -42,7 +42,10 @@ def compile_book():
     output_file = output_format_path + 'output.' + str(output_format.value)
 
     # leave out the file list
-    args = ['pandoc', '-s', '-o', str(output_file)]
+    if output_format.value == Format.PDF.value:
+        args = ['pandoc', '--pdf-engine=xelatex', '-s', '-o', str(output_file)]
+    else:
+        args = ['pandoc', '-s', '-o', str(output_file)]
     # splice in the file list to avoid Pandoc weirdness
     args[2:2] = file_list
 
