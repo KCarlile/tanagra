@@ -16,6 +16,7 @@ output_format = None
 
 
 def compile_book():
+    cleanup_media()
     copy_media_cwd()
 
     global output_format
@@ -121,8 +122,9 @@ def cleanup_media():
     # cleanup media directories from root
     try:
         for media_root_dir in media_root_dirs:
-            logging.print_info('Cleanup: ' + cwd + '/' + media_root_dir)
-            shutil.rmtree(cwd + '/' + media_root_dir)
+            if os.path.isdir(cwd + '/' + media_root_dir) and os.path.exists(cwd + '/' + media_root_dir):
+                logging.print_info('Cleanup: ' + cwd + '/' + media_root_dir)
+                shutil.rmtree(cwd + '/' + media_root_dir)
     # except OSError:
     except OSError as err:
         logging.print_error("OS error: {0}".format(err))
@@ -148,11 +150,14 @@ def cleanup_output(format=None):
 
     # cleanup output directories
     try:
-        shutil.rmtree(cwd + '/output/' + format)
+        cleanup_path = cwd + '/output/' + format
+
+        if os.path.isdir(cleanup_path) and os.path.exists(cleanup_path):
+            shutil.rmtree(cleanup_path)
     # except OSError:
     except OSError as err:
         logging.print_error("OS error: {0}".format(err))
-        sys.exit('Output directory cleanup failed.')
+        sys.exit('Output directory cleanup failed:', cleanup_path)
 
 
 def compile_book_init(p_output_format):
